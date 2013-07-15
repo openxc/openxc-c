@@ -8,6 +8,11 @@ OpenXC Platform. The primary platform for OpenXC applications is Android, but
 for embedded applications , often it is preferrable to use a low-overhead
 environment C.
 
+Dependencies
+============
+
+Requires the 'check' C library to build and run the test suite.
+
 License
 =======
 
