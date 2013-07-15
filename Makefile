@@ -1,8 +1,8 @@
 CC = g++
-INCLUDES = -I. -Iopenxc -Ideps/cJSON
+INCLUDES = -I. -Ideps/cJSON
 CFLAGS = $(INCLUDES) -c -w -Wall -Werror -g -ggdb
 LDFLAGS =
-LDLIBS = -lcheck
+LDLIBS = -lcheck -lusb
 
 TEST_DIR = tests
 
@@ -16,6 +16,7 @@ ifneq ($(OSTYPE),Darwin)
 endif
 
 SRC = $(wildcard openxc/*.c)
+SRC += $(wildcard openxc/tools/*.c)
 SRC += $(wildcard deps/cJSON/cJSON.c)
 OBJS = $(SRC:.c=.o)
 TEST_SRC = $(wildcard $(TEST_DIR)/*.c)

@@ -1,6 +1,6 @@
 #include <check.h>
 #include <stdint.h>
-#include "openxc.h"
+#include "openxc/openxc.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
