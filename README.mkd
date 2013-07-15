@@ -11,6 +11,9 @@ environment C.
 Dependencies
 ============
 
+* libusb
+* cJSON (linked from this repository as Git submodule)
+
 Requires the 'check' C library to build and run the test suite.
 
 License
