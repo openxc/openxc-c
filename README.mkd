@@ -1,0 +1,18 @@
+OpenXC-C - C Library from the OpenXC Platform
+===============================================
+
+This library is a part of the [OpenXC][] project.
+
+The OpenXC C library provides an alternative interface to vehicle data from the
+OpenXC Platform. The primary platform for OpenXC applications is Android, but
+for embedded applications , often it is preferrable to use a low-overhead
+environment C.
+
+License
+=======
+
+Copyright (c) 2013 Ford Motor Company
+
+Licensed under the BSD license.
+
+[OpenXC]: http://openxcplatform.com
