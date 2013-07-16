@@ -2,7 +2,7 @@ CC = g++
 INCLUDES = -I. -Ideps/cJSON
 CFLAGS = $(INCLUDES) -c -w -Wall -Werror -g -ggdb
 LDFLAGS =
-LDLIBS = -lcheck -lusb-1.0
+LDLIBS = -lcheck -lusb
 
 TEST_DIR = tests
 
@@ -31,14 +31,14 @@ BINARIES = $(BINARY_SRC:.c=.o)
 TEST_SRC = $(wildcard $(TEST_DIR)/*.c)
 TEST_OBJS = $(TEST_SRC:.c=.o)
 
-all: $(OBJS) openxc/dump
+all: $(OBJS) openxc/tools/dump
 
 test: $(TEST_DIR)/tests.bin
 	@set -o $(TEST_SET_OPTS) >/dev/null 2>&1
 	@export SHELLOPTS
 	@sh runtests.sh $(TEST_DIR)
 
-openxc/dump: openxc/tools/dump.o $(OBJS)
+openxc/tools/dump: openxc/tools/dump.o $(OBJS)
 	$(CC) $(LDFLAGS) $(CC_SYMBOLS) $(INCLUDES) $^ -o $@ $(LDLIBS)
 
 $(TEST_DIR)/tests.bin: $(TEST_OBJS) $(OBJS)
