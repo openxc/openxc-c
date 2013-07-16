@@ -1,3 +1,6 @@
 [submodule "deps/cJSON"]
 	path = deps/cJSON
 	url = https://github.com/openxc/cJSON
+[submodule "deps/emqueue"]
+	path = deps/emqueue
+	url = https://github.com/openxc/emqueue

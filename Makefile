@@ -1,5 +1,5 @@
 CC = g++
-INCLUDES = -I. -Ideps/cJSON
+INCLUDES = -I. -Ideps/cJSON -Ideps/emqueue
 CFLAGS = $(INCLUDES) -c -w -Wall -Werror -g -ggdb
 LDFLAGS =
 LDLIBS = -lcheck -lusb
@@ -25,6 +25,7 @@ CFLAGS += $(addprefix -D,$(SYMBOLS))
 
 SRC = $(wildcard openxc/*.c)
 SRC += $(wildcard deps/cJSON/cJSON.c)
+SRC += $(wildcard deps/emqueue/emqueue.c)
 OBJS = $(SRC:.c=.o)
 BINARY_SRC = $(wildcard openxc/tools/*.c)
 BINARIES = $(BINARY_SRC:.c=.o)
