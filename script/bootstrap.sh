@@ -80,6 +80,11 @@ _install() {
     fi
 }
 
+download() {
+    url=$1
+    filename=$2
+    curl $url -L --O $filename
+}
 
 if [ `id -u` == 0 ]; then
     die "Error: running as root - don't use 'sudo' with this script"
@@ -145,28 +150,6 @@ echo "Installing dependencies for running test suite..."
 
 if [ $OS == "cygwin" ] && ! command -v ld >/dev/null 2>&1; then
     _cygwin_error "gcc4"
-fi
-
-if [ $OS == "mac" ]; then
-    pushd $DEPENDENCIES_FOLDER
-    LLVM_BASENAME=clang+llvm-3.2-x86_64-apple-darwin11
-    LLVM_FILE=$LLVM_BASENAME.tar.gz
-    LLVM_URL=http://llvm.org/releases/3.2/$LLVM_FILE
-
-    if ! test -e $LLVM_FILE
-    then
-        echo "Downloading LLVM 3.2..."
-        download $LLVM_URL $LLVM_FILE
-    fi
-
-    if ! test -d $LLVM_BASENAME
-    then
-        echo "Installing LLVM 3.2 to local folder..."
-        tar -xzf $LLVM_FILE
-        echo "LLVM 3.2 installed"
-    fi
-
-    popd
 fi
 
 if ! ld -lcheck -o /tmp/checkcheck 2>/dev/null; then
