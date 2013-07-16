@@ -148,7 +148,7 @@ if [ $OS == "cygwin" ] && ! command -v ld >/dev/null 2>&1; then
 fi
 
 if [ $OS == "mac" ]; then
-    _pushd $DEPENDENCIES_FOLDER
+    pushd $DEPENDENCIES_FOLDER
     LLVM_BASENAME=clang+llvm-3.2-x86_64-apple-darwin11
     LLVM_FILE=$LLVM_BASENAME.tar.gz
     LLVM_URL=http://llvm.org/releases/3.2/$LLVM_FILE
@@ -166,7 +166,7 @@ if [ $OS == "mac" ]; then
         echo "LLVM 3.2 installed"
     fi
 
-    _popd
+    popd
 fi
 
 if ! ld -lcheck -o /tmp/checkcheck 2>/dev/null; then
