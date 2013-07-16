@@ -8,6 +8,26 @@ OpenXC Platform. The primary platform for OpenXC applications is Android, but
 for embedded applications , often it is preferrable to use a low-overhead
 environment C.
 
+Getting Started
+===============
+
+Run the bootstrap script to grab the dependncies:
+
+    $ script/bootstrap.sh
+
+Compile:
+
+    $ make
+
+Run the test suite:
+
+    $ make test
+
+Run the data dump tool:
+
+    $ make
+    $ openxc/tools/dump
+
 Dependencies
 ============
 
@@ -15,6 +35,8 @@ Dependencies
 * cJSON (linked from this repository as Git submodule)
 
 Requires the 'check' C library to build and run the test suite.
+
+The simplest way to
 
 License
 =======
