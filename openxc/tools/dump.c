@@ -50,7 +50,9 @@ void receive_translated(cJSON* nameObject, cJSON* root) {
     // Optional, may be NULL
     cJSON* event = cJSON_GetObjectItem(root, "event");
 
-    debug("%s: %d", name, value->valueint);
+    if (value->valueint == 2){
+        debug("%s: %d", name, value->valueint);
+    }
 }
 
 void receive_raw(cJSON* idObject, cJSON* root) {
