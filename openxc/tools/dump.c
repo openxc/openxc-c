@@ -26,19 +26,19 @@ void processQueue(QUEUE_TYPE(uint8_t)* queue, bool (*callback)(uint8_t*)) {
     uint8_t snapshot[length];
     QUEUE_SNAPSHOT(uint8_t, queue, snapshot);
     if(callback == NULL) {
-        debug("Callback is NULL (%p) -- unable to handle queue at %p",
-                callback, queue);
+        //debug("Callback is NULL (%p) -- unable to handle queue at %p",
+                //callback, queue);
         return;
     }
 
     if(callback(snapshot)) {
         QUEUE_INIT(uint8_t, queue);
     } else if(QUEUE_FULL(uint8_t, queue)) {
-        debug("Incoming message is too long");
+        //debug("Incoming message is too long");
         QUEUE_INIT(uint8_t, queue);
     } else if(strnchr((char*)snapshot, sizeof(snapshot) - 1, '\0') != NULL) {
-        debug("Incoming buffered message corrupted (%s) -- clearing buffer",
-                snapshot);
+        //debug("Incoming buffered message corrupted (%s) -- clearing buffer",
+                //snapshot);
         QUEUE_INIT(uint8_t, queue);
     }
 }
@@ -49,17 +49,31 @@ void receive_translated(cJSON* nameObject, cJSON* root) {
 
     // Optional, may be NULL
     cJSON* event = cJSON_GetObjectItem(root, "event");
+    
+static bool ecall_active = false;
 
-    if (value->valueint == 2){
-        debug("%s: %d", name, value->valueint);
-    }
+if(!strcmp(value->valuestring, "Active")) {
+    if(!ecall_active) {
+        debug("%s: %s", name, value->valuestring);    
 }
+    ecall_active = true;
+} else {
+   ecall_active = false;
+}
+
+
+    //if (!strcmp(value->valuestring, "Active")){
+        //debug("%s: %s", name, value->valuestring);
+    //}
+}
+
+
 
 void receive_raw(cJSON* idObject, cJSON* root) {
     uint32_t id = idObject->valueint;
     cJSON* dataObject = cJSON_GetObjectItem(root, "data");
     if(dataObject == NULL) {
-        debug("Raw message missing data", id);
+        //debug("Raw message missing data", id);
         return;
     }
 
@@ -76,7 +90,7 @@ bool receive_message(uint8_t* message) {
         if(nameObject == NULL) {
             cJSON* idObject = cJSON_GetObjectItem(root, "id");
             if(idObject == NULL) {
-                debug("Message is malformed, missing name or id: %s", message);
+                //debug("Message is malformed, missing name or id: %s", message);
             } else {
                 receive_raw(idObject, root);
             }
@@ -85,18 +99,18 @@ bool receive_message(uint8_t* message) {
         }
         cJSON_Delete(root);
     } else {
-        debug("No valid JSON in incoming buffer yet -- "
-                "if it's valid, may be out of memory");
+        //debug("No valid JSON in incoming buffer yet -- "
+                //"if it's valid, may be out of memory");
     }
     return foundMessage;
 }
 
 int main() {
     if(libusb_init(NULL) < 0) {
-        debug("Unable to initialize libusb");
+        //debug("Unable to initialize libusb");
         return -1;
     } else {
-        debug("Initialized libusb");
+        //debug("Initialized libusb");
     }
 
     QUEUE_TYPE(uint8_t) buffer;
@@ -105,7 +119,7 @@ int main() {
     struct libusb_device **devs;
     int device_count = libusb_get_device_list(NULL, &devs);
     if(device_count < 0) {
-        debug("No USB devices available");
+        //debug("No USB devices available");
         return -1;
     }
 
@@ -115,22 +129,22 @@ int main() {
     while((dev = devs[i++]) != NULL) {
         libusb_device_descriptor descriptor;
         if(libusb_get_device_descriptor(dev, &descriptor) < 0) {
-            debug("Error opening USB device");
+            //debug("Error opening USB device");
             return -1;
         } else {
-            debug("Found USB device, vendor ID 0x%x, product ID 0x%x",
-                    descriptor.idVendor, descriptor.idProduct);
+            //debug("Found USB device, vendor ID 0x%x, product ID 0x%x",
+                    //descriptor.idVendor, descriptor.idProduct);
         }
 
         if(descriptor.idVendor == VEHICLE_INTERFACE_VENDOR_ID &&
                 descriptor.idProduct == VEHICLE_INTERFACE_PRODUCT_ID) {
             if(libusb_open(dev, &handle) < 0) {
-                debug("Error opening USB device");
+                //debug("Error opening USB device");
                 libusb_free_device_list(devs, 1);
                 libusb_close(handle);
                 return -1;
             } else {
-                debug("Opened USB device");
+                //debug("Opened USB device");
                 break;
             }
         } else {
@@ -139,7 +153,7 @@ int main() {
     }
 
     if(dev == NULL) {
-        debug("Unable to find OpenXC VI USB device");
+        //debug("Unable to find OpenXC VI USB device");
         return -1;
     }
 
@@ -147,21 +161,21 @@ int main() {
     if(handle != NULL) {
         int configured;
         if(libusb_get_configuration(handle, &configured) != 0) {
-            debug("Error loading configuration from USB device");
+            //debug("Error loading configuration from USB device");
             return -1;
         } else if(configured != 1) {
             if(libusb_set_configuration(handle, 1) != 0) {
-                debug("Error setting configuration for USB device");
+                //debug("Error setting configuration for USB device");
                 return -1;
             }
         }
         libusb_free_device_list(devs, 1);
 
         if(libusb_claim_interface(handle, 0) < 0) {
-            debug("Error claiming interface on USB device");
+            //debug("Error claiming interface on USB device");
             return -1;
         } else {
-            debug("Claimed interface");
+            //debug("Claimed interface");
         }
 
         unsigned char data[512];
@@ -170,10 +184,11 @@ int main() {
 
         while(true) {
             if(libusb_bulk_transfer(handle, BULK_EP_OUT, data, 512, &received, 0) < 0) {
-                debug("Error while reading data");
+                //debug("Error while reading data");
             } else if(received > 0) {
                 for(int i = 0; i < received; i++) {
                     QUEUE_PUSH(uint8_t, &buffer, data[i]);
+                        fflush(stdout);
                 }
                 processQueue(&buffer, receive_message);
             }
