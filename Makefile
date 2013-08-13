@@ -2,7 +2,7 @@ CC = g++
 INCLUDES = -I. -Ideps/cJSON -Ideps/emqueue
 CFLAGS = $(INCLUDES) -c -w -Wall -Werror -g -ggdb
 LDFLAGS =
-LDLIBS = -lcheck -lusb
+LDLIBS = -lcheck -lusb-1.0
 
 TEST_DIR = tests
 
