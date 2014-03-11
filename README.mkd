@@ -1,4 +1,4 @@
-OpenXC-C - C Library from the OpenXC Platform
+OpenXC-C - C Library for the OpenXC Platform
 ===============================================
 
 This library is a part of the [OpenXC][] project.
