@@ -8,6 +8,14 @@ OpenXC Platform. The primary platform for OpenXC applications is Android, but
 for embedded applications , often it is preferrable to use a low-overhead
 environment C.
 
+This is a very, very early draft of a C library for accessing an OpenXC device.
+At the moment it is less of a library and more of an example program for
+accessing the VI without a library - it's not really much code. The example
+program included is comparable to the `openxc-dump` tool from the [OpenXC Python
+library](https://github.com/openxc/openxc-python) although without nearly as
+many features or flexibility. The C libray is most useful for running on
+embedded platforms (e.g. a DSRC radio) that don't have a Python runtime.
+
 Getting Started
 ===============
 
@@ -51,7 +59,7 @@ The simplest way to
 License
 =======
 
-Copyright (c) 2013 Ford Motor Company
+Copyright (c) 2014 Ford Motor Company
 
 Licensed under the BSD license.
 
